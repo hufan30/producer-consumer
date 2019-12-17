@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class ProducerConsumer1 {
     private static Optional<Integer> value;
+    private static final Object lock = new Object();
 
     public static void main(String[] args) throws InterruptedException {
         value = Optional.empty();
@@ -16,6 +17,7 @@ public class ProducerConsumer1 {
         producer.start();
         consumer.start();
 
+
         producer.join();
         producer.join();
     }
@@ -24,10 +26,10 @@ public class ProducerConsumer1 {
         @Override
         public void run() {
             for (int i = 0; i < 10; i++) {
-                synchronized ("lock") {
+                synchronized (lock) {
                     while (value.isPresent()) {
                         try {
-                            "lock".wait();
+                            lock.wait();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -35,7 +37,7 @@ public class ProducerConsumer1 {
                     int random = new Random().nextInt();
                     System.out.println("Producing " + random);
                     value = Optional.of(random);
-                    "lock".notify();
+                    lock.notify();
                 }
             }
         }
@@ -45,17 +47,17 @@ public class ProducerConsumer1 {
         @Override
         public void run() {
             for (int i = 0; i < 10; i++) {
-                synchronized ("lock") {
+                synchronized (lock) {
                     while (!value.isPresent()) {
                         try {
-                            "lock".wait();
+                            lock.wait();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
                     System.out.println("Consuming " + value.get());
                     value = Optional.empty();
-                    "lock".notify();
+                    lock.notify();
                 }
             }
         }
