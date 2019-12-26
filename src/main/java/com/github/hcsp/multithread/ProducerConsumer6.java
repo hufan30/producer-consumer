@@ -2,13 +2,14 @@ package com.github.hcsp.multithread;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
-public class ProducerConsumer1 {
+public class ProducerConsumer6 {
     public static void main(String[] args) throws InterruptedException {
-        Container1 container=new Container1();
-        Object lock =new Object();
-        Producer producer = new Producer(container, lock);
-        Consumer consumer = new Consumer(container, lock);
+        Semaphore semaphore = new Semaphore(1, true);
+        Container6 container=new Container6(semaphore);
+        Producer producer = new Producer(container, semaphore);
+        Consumer consumer = new Consumer(container, semaphore);
 
         producer.start();
         consumer.start();
@@ -18,50 +19,49 @@ public class ProducerConsumer1 {
     }
 
     public static class Producer extends Thread {
-        Container1 container;
-        Object lock;
+        Container6 container;
+        Semaphore semaphore;
 
-        public Producer(Container1 container, Object lock) {
+        public Producer(Container6 container, Semaphore semaphore) {
             this.container = container;
-            this.lock = lock;
+            this.semaphore=semaphore;
         }
 
         @Override
         public void run() {
+
             for (int i = 0; i < 10; i++) {
-                synchronized (lock) {
                     while (container.getValue().isPresent()) {
                         try {
-                            lock.wait();
+                            semaphore.acquire();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
-                    int r = new Random().nextInt();
+
+                int r = new Random().nextInt();
                     System.out.println("Producing " + r);
                     container.setValue(Optional.of(r));
-                    lock.notify();
-                }
+                    semaphore.release();
             }
         }
     }
 
     public static class Consumer extends Thread {
-        Container1 container;
-        Object lock;
+        Container6 container;
+        Semaphore semaphore;
 
-        public Consumer(Container1 container, Object lock) {
+        public Consumer(Container6 container, Semaphore semaphore) {
             this.container = container;
-            this.lock = lock;
+            this.semaphore=semaphore;
         }
 
         @Override
         public void run() {
             for (int i = 0; i < 10; i++) {
-                synchronized (lock) {
                     while (!container.getValue().isPresent()) {
                         try {
-                            lock.wait();
+                            semaphore.acquire();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -69,8 +69,7 @@ public class ProducerConsumer1 {
                     Integer value = container.getValue().get();
                     System.out.println("Consuming " + value);
                     container.setValue(Optional.empty());
-                    lock.notify();
-                }
+                    semaphore.release();
             }
         }
     }
