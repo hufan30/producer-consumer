@@ -39,10 +39,10 @@ public class ProducerConsumer2 {
                             container.getNotConsumedYet().await();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
+                            throw new RuntimeException();
                         }
                     }
                     int r = new Random().nextInt();
-                    System.out.println("producer " + r);
                     container.setContainer(Optional.of(r));
                     container.getNotProducedYet().signal();
                 } finally {
@@ -71,11 +71,11 @@ public class ProducerConsumer2 {
                             container.getNotProducedYet().await();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
+                            throw new RuntimeException();
                         }
                     }
                     Integer value = container.getContainer().get();
                     container.setContainer(Optional.empty());
-                    System.out.println("consumer " + value);
                     container.getNotConsumedYet().signal();
                 } finally {
                     lock.unlock();
