@@ -41,7 +41,7 @@ public class ProducerConsumer1 {
                         }
                     }
                     random = new Random().nextInt();
-                    System.out.println("Producing" + random);
+                    System.out.println("Producing " + random);
                     lock.notify();
 
                 }
@@ -66,7 +66,7 @@ public class ProducerConsumer1 {
                             e.printStackTrace();
                         }
                     }
-                    System.out.println("Consuming" + random);
+                    System.out.println("Consuming " + random);
                     random = null;
                     lock.notify();
                 }
