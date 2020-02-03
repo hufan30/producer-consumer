@@ -1,6 +1,5 @@
 package com.github.hcsp.multithread;
 
-import java.util.Optional;
 import java.util.Random;
 
 public class ProducerConsumer1 {
