@@ -5,23 +5,23 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ProducerConsumer3 {
-        public static void main(String[] args) throws InterruptedException {
-            BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(1);
-            BlockingQueue<Integer> signal = new LinkedBlockingQueue<>(1);
+    public static void main(String[] args) throws InterruptedException {
+        BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(1);
+        BlockingQueue<Integer> signal = new LinkedBlockingQueue<>(1);
 
-            Producer producer = new Producer(queue,signal);
-            Consumer consumer = new Consumer(queue,signal);
+        Producer producer = new Producer(queue, signal);
+        Consumer consumer = new Consumer(queue, signal);
 
-            producer.start();
-            consumer.start();
+        producer.start();
+        consumer.start();
 
-            producer.join();
-            producer.join();
-        }
+        producer.join();
+        producer.join();
+    }
 
     public static class Producer extends Thread {
-            BlockingQueue<Integer> queue;
-            BlockingQueue<Integer> signal;
+        BlockingQueue<Integer> queue;
+        BlockingQueue<Integer> signal;
 
         public Producer(BlockingQueue<Integer> queue, BlockingQueue<Integer> signal) {
             this.queue = queue;
@@ -30,8 +30,8 @@ public class ProducerConsumer3 {
 
         @Override
         public void run() {
-            for (int i =0;i<10;i++){
-               int random = new Random().nextInt();
+            for (int i = 0; i < 10; i++) {
+                int random = new Random().nextInt();
                 System.out.println("Producing:" + random);
                 try {
                     queue.put(random);
@@ -54,9 +54,9 @@ public class ProducerConsumer3 {
 
         @Override
         public void run() {
-            for (int i = 0; i < 10;++i){
+            for (int i = 0; i < 10; ++i) {
                 try {
-                    System.out.println("Consuming:"+queue.take());
+                    System.out.println("Consuming:" + queue.take());
                     signal.put(0);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

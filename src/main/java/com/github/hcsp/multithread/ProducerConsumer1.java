@@ -23,10 +23,7 @@ public class ProducerConsumer1 {
 
     public static class Producer extends Thread {
         Object lock;
-
         //任何一个对象构造的时候需要先构造它的父亲
-
-
         public Producer(Object lock) {
             this.lock = lock;
         }
@@ -56,12 +53,9 @@ public class ProducerConsumer1 {
 
     public static class Consumer extends Thread {
         Object lock;
-
         public Consumer(Object lock) {
             this.lock = lock;
         }
-
-
         @Override
         public void run() {
             for (int i = 0; i < 10; i++) {
