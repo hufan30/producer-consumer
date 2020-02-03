@@ -72,8 +72,7 @@ public class ProducerConsumer2 {
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
-                finally {
+                } finally {
                     Integer poll = (Integer) que.poll();
                     System.out.println("Consuming " + poll);
                     condition.signal();

@@ -20,17 +20,19 @@ public class ProducerConsumer5 {
     public static class Producer extends Thread {
         private Exchanger<Integer> exchanger;
         private Exchanger<Integer> signalExchanger;
-        public Producer(Exchanger<Integer> exchanger, Exchanger<Integer> signalExchanger){
+
+        public Producer(Exchanger<Integer> exchanger, Exchanger<Integer> signalExchanger) {
             this.exchanger = exchanger;
             this.signalExchanger = signalExchanger;
         }
+
         @Override
         public void run() {
-            for (int i=0; i<10; i++){
-                try{
+            for (int i = 0; i < 10; i++) {
+                try {
 
                     Integer value = new Random().nextInt();
-                    System.out.println("Producing "+value);
+                    System.out.println("Producing " + value);
                     exchanger.exchange(value);
                     signalExchanger.exchange(null);
                 } catch (InterruptedException e) {
@@ -44,17 +46,18 @@ public class ProducerConsumer5 {
     public static class Consumer extends Thread {
         private Exchanger<Integer> exchanger;
         private Exchanger<Integer> signalExchanger;
-        public Consumer(Exchanger<Integer> exchanger, Exchanger<Integer> signalExchanger){
+
+        public Consumer(Exchanger<Integer> exchanger, Exchanger<Integer> signalExchanger) {
             this.exchanger = exchanger;
             this.signalExchanger = signalExchanger;
         }
 
         @Override
         public void run() {
-            for (int i=0; i<10; i++){
-                try{
+            for (int i = 0; i < 10; i++) {
+                try {
                     int value = exchanger.exchange(null);
-                    System.out.println("Consuming "+value);
+                    System.out.println("Consuming " + value);
 
                     signalExchanger.exchange(value);
 
