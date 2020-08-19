@@ -6,6 +6,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ProducerConsumer4 {
     public static void main(String[] args) throws InterruptedException {
+        //这里使用信号量的模式进行同步；
         Data data = new Data();
         SignalData signalData = new SignalData();
         Producer producer = new Producer(data, signalData);

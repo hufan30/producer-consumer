@@ -6,21 +6,18 @@ import java.util.Random;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ProducerConsumer2 {
-    static ReentrantLock reentrantLock = new ReentrantLock();
-    static Condition condition = reentrantLock.newCondition();
+public class ProducerConsumer6 {
+//    static ReentrantLock reentrantLock = new ReentrantLock();
+//    static Condition condition = reentrantLock.newCondition();
 
     public static void main(String[] args) throws InterruptedException {
 
         Queue<Integer> que = new LinkedList();
-//        ReentrantLock reentrantLock = new ReentrantLock();
-//        Condition condition = reentrantLock.newCondition();
+        ReentrantLock reentrantLock = new ReentrantLock();
+        Condition condition = reentrantLock.newCondition();
 
-        Producer producer = new Producer(que);
-        Consumer consumer = new Consumer(que);
-
-
-
+        Producer producer = new Producer(que,reentrantLock,condition);
+        Consumer consumer = new Consumer(que,reentrantLock,condition);
 
         producer.start();
         consumer.start();
@@ -31,8 +28,12 @@ public class ProducerConsumer2 {
 
     public static class Producer extends Thread {
         Queue que;
+        ReentrantLock reentrantLock;
+        Condition condition;
 
-        public Producer(Queue que) {
+        public Producer(Queue que,ReentrantLock reentrantLock,Condition condition) {
+            this.reentrantLock = reentrantLock;
+            this.condition = condition;
             this.que = que;
         }
 
@@ -59,8 +60,12 @@ public class ProducerConsumer2 {
 
     public static class Consumer extends Thread {
         Queue que;
+        ReentrantLock reentrantLock;
+        Condition condition;
 
-        public Consumer(Queue que) {
+        public Consumer(Queue que,ReentrantLock reentrantLock,Condition condition) {
+            this.reentrantLock = reentrantLock;
+            this.condition = condition;
             this.que = que;
         }
 
