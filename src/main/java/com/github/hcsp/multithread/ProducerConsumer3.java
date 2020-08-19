@@ -29,6 +29,7 @@ public class ProducerConsumer3 {
                     que.put(num);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -43,6 +44,7 @@ public class ProducerConsumer3 {
                     poll = (Integer) que.take();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
                 System.out.println("Consuming " + poll);
             }

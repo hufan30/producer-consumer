@@ -37,6 +37,7 @@ public class ProducerConsumer1 {
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                        throw new RuntimeException(e);
                     }
                     int num = new Random().nextInt();
                     System.out.println("Producing " + num);
@@ -64,6 +65,7 @@ public class ProducerConsumer1 {
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                        throw new RuntimeException(e);
                     }
                     Integer poll = (Integer) que.poll();
                     System.out.println("Consuming " + poll);

@@ -37,7 +37,6 @@ public class ProducerConsumer5 {
                     signalExchanger.exchange(null);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                } finally {
                 }
             }
         }
@@ -63,7 +62,7 @@ public class ProducerConsumer5 {
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                } finally {
+                    throw new RuntimeException(e);
                 }
             }
         }
